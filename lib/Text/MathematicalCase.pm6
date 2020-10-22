@@ -1,4 +1,3 @@
-my class mc:ver<0.0.1>:auth<cpan:ELIZABETH> { }   # just for mi6
 
 # Most of the information to create the mapper was obtained from
 # https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols
@@ -140,37 +139,57 @@ my constant %mc = make-mapper(0, 1);
 my constant %lc = make-mapper(1, 1);
 my constant %uc = make-mapper(0, 0);
 
-my sub mc(Str:D $string, |c --> Str:D) is export {
-    process(%mc, 'mc', $string, |c)
+module Text::MathematicalCase:ver<0.0.1>:auth<cpan:ELIZABETH> {
+    my sub mc(Str:D $string, |c --> Str:D) is export(:all) {
+        process(%mc, 'mc', $string, |c)
+    }
+    my sub lc(Str:D $string, |c --> Str:D) is export(:all) {
+        process(%lc, 'lc', $string.lc, |c)
+    }
+    my sub uc(Str:D $string, |c --> Str:D) is export(:all) {
+        process(%uc, 'uc', $string.uc, |c)
+    }
 }
-my sub lc(Str:D $string, |c --> Str:D) is export {
-    process(%lc, 'lc', $string.lc, |c)
-}
-my sub uc(Str:D $string, |c --> Str:D) is export {
-    process(%uc, 'uc', $string.uc, |c)
+
+sub EXPORT(*@args, *%_) {
+
+    if @args {
+        my $imports := Map.new( |(EXPORT::all::{ @args.map: '&' ~ * }:p) );
+        if $imports != @args {
+            die "Text::MathematicalCase doesn't know how to export: "
+              ~ @args.grep( { !$imports{$_} } ).join(', ')
+        }
+        $imports
+    }
+    else {
+        Map.new('&mc' => EXPORT::all::<&mc>)
+    }
 }
 
 =begin pod
 
 =head1 NAME
 
-mc - convert to/from mathematical case
+Text::MathematicalCase - convert to/from mathematical case
 
 =head1 SYNOPSIS
 
 =begin code :lang<raku>
 
-use mc;
+use Text::MathematicalCase;
 
 =end code
 
 =head1 DESCRIPTION
 
-mc is ...
+Text::MathematicalCase is ...
 
 =head1 AUTHOR
 
 Elizabeth Mattijsen <liz@wenzperl.nl>
+
+Source can be located at: https://github.com/lizmat/Text-MathematicalCase .
+Comments and Pull Requests are welcome.
 
 =head1 COPYRIGHT AND LICENSE
 
@@ -179,3 +198,5 @@ Copyright 2020 Elizabeth Mattijsen
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
 =end pod
+
+# vim: expandtab shiftwidth=4

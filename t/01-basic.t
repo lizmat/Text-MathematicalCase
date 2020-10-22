@@ -1,5 +1,5 @@
 use Test;
-use mc;
+use Text::MathematicalCase <mc lc uc>;
 
 plan 104;
 
