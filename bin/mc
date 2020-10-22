@@ -1,0 +1,33 @@
+use Text::MathematicalCase;
+
+multi sub MAIN(
+  Bool :$serif,
+  Bool :$sans-serif,
+  Bool :$script,
+  Bool :$fraktur,
+  Bool :$monospace,
+  Bool :$double-struck,
+  Bool :$italic,
+  Bool :$bold
+) {
+    say mc slurp,
+      :$serif, :$sans-serif, :$script, :$fraktur, :$monospace,
+      :$double-struck, :$italic, :$bold
+}
+
+multi sub MAIN(Str $string,
+  Bool :$serif,
+  Bool :$sans-serif,
+  Bool :$script,
+  Bool :$fraktur,
+  Bool :$monospace,
+  Bool :$double-struck,
+  Bool :$italic,
+  Bool :$bold
+) {
+    say mc $string,
+      :$serif, :$sans-serif, :$script, :$fraktur, :$monospace,
+      :$double-struck, :$italic, :$bold
+}
+
+# vim: expandtab shiftwidth=4
