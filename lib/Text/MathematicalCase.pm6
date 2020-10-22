@@ -109,14 +109,14 @@ my constant %mapper = do {
         %mapper{$adverbs} := Pair.new(
           @adverbs.map( -> $type {
               |(%raw{$type}.flat) if $type ne $adverbs;
-          } ).List.join,
-          (|(@info.flat) xx $multiplier).join
+          } ).List.join.NFD,
+          (|(@info.flat) xx $multiplier).join.NFD
         )
     }
 
     # temporary store in the mapper, so we can create constants later
-    %mapper<lc> := Pair.new(@lc-source.flat.join, @lc-target.flat.join);
-    %mapper<uc> := Pair.new(@uc-source.flat.join, @uc-target.flat.join);
+    %mapper<lc> := Pair.new(@lc-source.flat.join.NFD, @lc-target.flat.join.NFD);
+    %mapper<uc> := Pair.new(@uc-source.flat.join.NFD, @uc-target.flat.join.NFD);
 
     %mapper.Map
 }
@@ -124,7 +124,25 @@ my constant %mapper = do {
 my constant $lc-mapper = %mapper<lc>;
 my constant $uc-mapper = %mapper<uc>;
 
-module Text::MathematicalCase:ver<0.0.2>:auth<cpan:ELIZABETH> {
+my sub trans(Str:D \string, Pair:D \mapper --> Str:D) {
+    my @source     := string.NFD;
+    my @haystack   := mapper.key;
+    my @translated := mapper.value;
+
+    my uint32 @result;
+    for @source -> int $needle {
+        with @haystack.first(* == $needle, :k) {
+            @result.push(@translated[$_]);
+        }
+        else {
+            @result.push($needle);
+        }
+    }
+
+    Uni.new(@result).Str;
+}
+
+module Text::MathematicalCase:ver<0.0.3>:auth<cpan:ELIZABETH> {
     my sub mc(Cool:D \string,
       :$serif, :$sans-serif, :$script, :$fraktur, :$monospace, :$double-struck,
       :$italic, :$bold
@@ -143,7 +161,7 @@ module Text::MathematicalCase:ver<0.0.2>:auth<cpan:ELIZABETH> {
         $adverbs ~= ':italic' if $italic;
 
         if %mapper{$adverbs} -> $mapper {
-            string.trans($mapper)
+            trans(string, $mapper)
         }
         else {
             Failure.new(X::Adverb.new(
@@ -155,10 +173,10 @@ module Text::MathematicalCase:ver<0.0.2>:auth<cpan:ELIZABETH> {
     }
 
     my sub lc(Cool:D \string --> Str:D) is export(:all) {
-        string.lc.trans($lc-mapper)
+        trans(string.lc, $lc-mapper)
     }
     my sub uc(Cool:D \string --> Str:D) is export(:all) {
-        string.uc.trans($uc-mapper)
+        trans(string.uc, $uc-mapper)
     }
     my sub adverbs(--> List:D) is export(:all) {
         @adverbs
