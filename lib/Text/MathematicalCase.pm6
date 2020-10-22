@@ -124,21 +124,23 @@ my constant %mapper = do {
 my constant $lc-mapper = %mapper<lc>;
 my constant $uc-mapper = %mapper<uc>;
 
-module Text::MathematicalCase:ver<0.0.1>:auth<cpan:ELIZABETH> {
+module Text::MathematicalCase:ver<0.0.2>:auth<cpan:ELIZABETH> {
     my sub mc(Cool:D \string,
       :$serif, :$sans-serif, :$script, :$fraktur, :$monospace, :$double-struck,
       :$italic, :$bold
     --> Str:D) is export(:all) is hidden-from-backtrace {
 
         my str $adverbs;
-        $adverbs ~= ':serif'         if $serif;
+        $adverbs  = ':serif'         if $serif;
         $adverbs ~= ':sans-serif'    if $sans-serif;
         $adverbs ~= ':script'        if $script;
         $adverbs ~= ':fraktur'       if $fraktur;
         $adverbs ~= ':monospace'     if $monospace;
         $adverbs ~= ':double-struck' if $double-struck;
-        $adverbs ~= ':bold'          if $bold;
-        $adverbs ~= ':italic'        if $italic;
+
+        $adverbs ||= ':serif';  # allow for just :italic and :bold
+        $adverbs ~= ':bold'   if $bold;
+        $adverbs ~= ':italic' if $italic;
 
         if %mapper{$adverbs} -> $mapper {
             string.trans($mapper)

@@ -2,5 +2,9 @@ Revision history for Text::MathematicalCase
 
 {{$NEXT}}
 
+0.0.2  2020-10-22T14:35:23+02:00
+    - Allow :italic / bold as synonym for :serif:italic / bold
+    - Fix listing of supported types in pod
+
 0.0.1  2020-10-22T13:40:37+02:00
     - Initial version
