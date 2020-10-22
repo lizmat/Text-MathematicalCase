@@ -3,41 +3,25 @@
 # https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols
 
 my constant %raw =
-  ":ascii" => (
+  ":serif" => (
       "A" .. "Z",               # A .. Z
       "a" .. "z",               # a .. z
       "0" .. "9",               # 0 .. 9
   ),
-  ":bold" => (
+  ":serif:bold" => (
       "\x1D400" .. "\x1D419",   # 𝐀 .. 𝐙
       "\x1D41A" .. "\x1D433",   # 𝐚 .. 𝐳
       "\x1D7CE" .. "\x1D7d7",   # 𝟎 .. 𝟗
   ),
-  ":italic" => (
+  ":serif:italic" => (
       "\x1D434" .. "\x1D44D",   # 𝐴 .. 𝑍
       ( "\x1D44E" .. "\x1D454", "\x0210E", "\x1D456" .. "\x1D467"
       ),                        # 𝑎 .. 𝑧
       "\x1D7F6" .. "\x1D7FF",   # 𝟶 .. 𝟿
   ),
-  ":bold:italic" => (
+  ":serif:bold:italic" => (
       "\x1D468" .. "\x1D481",   # 𝑨 .. 𝒁
       "\x1D482" .. "\x1D49B",   # 𝒂 .. 𝒛
-      "\x1D7CE" .. "\x1D7d7",   # 𝟎 .. 𝟗
-  ),
-  ":script" => (
-      ( "\x1D49C", "\x0212C", "\x1D49E", "\x1D49F", "\x02130", "\x02131",
-        "\x1D4A2", "\x0210B", "\x02110", "\x1D4A5", "\x1D4A6", "\x02112",
-        "\x02133", "\x1D4A9", "\x1D4AA", "\x02118", "\x1D4AC", "\x0211B",
-        "\x1D4AE" .. "\x1D4B5"
-      ),                        # 𝒜 .. 𝒵
-      ( "\x1D4B6" .. "\x1D4B9", "\x0212F", "\x1D4BB", "\x0210A",
-        "\x1D4BD" .. "\x1D4C3", "\x02134", "\x1D4C5" .. "\x1D4CF"
-      ),                        # 𝒶 .. 𝓏
-      "\x1D7F6" .. "\x1D7FF",   # 𝟶 .. 𝟿
-  ),
-  ":script:bold" => (
-      "\x1D4D0" .. "\x1D4E9",   # 𝓐 .. 𝓩
-      "\x1D4EA" .. "\x1D503",   # 𝓪 .. 𝔃
       "\x1D7CE" .. "\x1D7d7",   # 𝟎 .. 𝟗
   ),
   ":sans-serif" => (
@@ -59,6 +43,22 @@ my constant %raw =
       "\x1D63C" .. "\x1D655",   # 𝘼 .. 𝙕
       "\x1D656" .. "\x1D66F",   # 𝙖 .. 𝙯
       "\x1D7EC" .. "\x1D7F5",   # 𝟬 .. 𝟵
+  ),
+  ":script" => (
+      ( "\x1D49C", "\x0212C", "\x1D49E", "\x1D49F", "\x02130", "\x02131",
+        "\x1D4A2", "\x0210B", "\x02110", "\x1D4A5", "\x1D4A6", "\x02112",
+        "\x02133", "\x1D4A9", "\x1D4AA", "\x02118", "\x1D4AC", "\x0211B",
+        "\x1D4AE" .. "\x1D4B5"
+      ),                        # 𝒜 .. 𝒵
+      ( "\x1D4B6" .. "\x1D4B9", "\x0212F", "\x1D4BB", "\x0210A",
+        "\x1D4BD" .. "\x1D4C3", "\x02134", "\x1D4C5" .. "\x1D4CF"
+      ),                        # 𝒶 .. 𝓏
+      "\x1D7F6" .. "\x1D7FF",   # 𝟶 .. 𝟿
+  ),
+  ":script:bold" => (
+      "\x1D4D0" .. "\x1D4E9",   # 𝓐 .. 𝓩
+      "\x1D4EA" .. "\x1D503",   # 𝓪 .. 𝔃
+      "\x1D7CE" .. "\x1D7d7",   # 𝟎 .. 𝟗
   ),
   ":fraktur" => (
       ( "\x1D504", "\x1D505", "\x0212D", "\x1D507" .. "\x1D50A", "\x0210C",
@@ -91,68 +91,79 @@ my constant %raw =
 my constant @adverbs    := %raw.keys.sort.List;
 my constant $multiplier := @adverbs.end;
 
-my sub make-mapper(Int:D $uc, Int:D $lc --> Map:D) {
+my constant %mapper = do {
     my %mapper;
-    
+    my @lc-source;
+    my @lc-target;
+    my @uc-source;
+    my @uc-target;
+
     for @adverbs -> $adverbs {
         my @info := %raw{$adverbs};
+
+        @lc-source.push(@info[0]);  # upper ->
+        @lc-target.push(@info[1]);  #          lower
+        @uc-source.push(@info[1]);  # lower ->
+        @uc-target.push(@info[0]);  #          upper
 
         %mapper{$adverbs} := Pair.new(
           @adverbs.map( -> $type {
               |(%raw{$type}.flat) if $type ne $adverbs;
           } ).List.join,
-          (|((@info[$uc], @info[$lc], @info[2]).flat) xx $multiplier).List.join
+          (|(@info.flat) xx $multiplier).join
         )
     }
+
+    # temporary store in the mapper, so we can create constants later
+    %mapper<lc> := Pair.new(@lc-source.flat.join, @lc-target.flat.join);
+    %mapper<uc> := Pair.new(@uc-source.flat.join, @uc-target.flat.join);
 
     %mapper.Map
 }
 
-my sub process(%mapper, Str:D $what, Str:D \string,
-  :$sans-serif, :$script, :$fraktur, :$monospace, :$double-struck, :$ascii,
-  :$italic, :$bold
---> Str:D) is hidden-from-backtrace {
-
-    my str $adverbs;
-    $adverbs ~= ':sans-serif'    if $sans-serif;
-    $adverbs ~= ':script'        if $script;
-    $adverbs ~= ':fraktur'       if $fraktur;
-    $adverbs ~= ':monospace'     if $monospace;
-    $adverbs ~= ':double-struck' if $double-struck;
-    $adverbs ~= ':ascii'         if $ascii;
-    $adverbs ~= ':bold'          if $bold;
-    $adverbs ~= ':italic'        if $italic;
-
-    if %mapper{$adverbs} -> $mapper {
-        string.trans($mapper)
-    }
-    else {
-        Failure.new(X::Adverb.new(
-          :what{$what},
-          :source(try { string.VAR.name } // string.WHAT.raku),
-          :nogo($adverbs.substr(1).split(":"))
-        ))
-    }
-}
-
-my constant %mc = make-mapper(0, 1);
-my constant %lc = make-mapper(1, 1);
-my constant %uc = make-mapper(0, 0);
+my constant $lc-mapper = %mapper<lc>;
+my constant $uc-mapper = %mapper<uc>;
 
 module Text::MathematicalCase:ver<0.0.1>:auth<cpan:ELIZABETH> {
-    my sub mc(Str:D $string, |c --> Str:D) is export(:all) {
-        process(%mc, 'mc', $string, |c)
+    my sub mc(Cool:D \string,
+      :$serif, :$sans-serif, :$script, :$fraktur, :$monospace, :$double-struck,
+      :$italic, :$bold
+    --> Str:D) is export(:all) is hidden-from-backtrace {
+
+        my str $adverbs;
+        $adverbs ~= ':serif'         if $serif;
+        $adverbs ~= ':sans-serif'    if $sans-serif;
+        $adverbs ~= ':script'        if $script;
+        $adverbs ~= ':fraktur'       if $fraktur;
+        $adverbs ~= ':monospace'     if $monospace;
+        $adverbs ~= ':double-struck' if $double-struck;
+        $adverbs ~= ':bold'          if $bold;
+        $adverbs ~= ':italic'        if $italic;
+
+        if %mapper{$adverbs} -> $mapper {
+            string.trans($mapper)
+        }
+        else {
+            Failure.new(X::Adverb.new(
+              :what<mc>,
+              :source(try { string.VAR.name } // string.WHAT.raku),
+              :nogo($adverbs.substr(1).split(":"))
+            ))
+        }
     }
-    my sub lc(Str:D $string, |c --> Str:D) is export(:all) {
-        process(%lc, 'lc', $string.lc, |c)
+
+    my sub lc(Cool:D \string --> Str:D) is export(:all) {
+        string.lc.trans($lc-mapper)
     }
-    my sub uc(Str:D $string, |c --> Str:D) is export(:all) {
-        process(%uc, 'uc', $string.uc, |c)
+    my sub uc(Cool:D \string --> Str:D) is export(:all) {
+        string.uc.trans($uc-mapper)
+    }
+    my sub adverbs(--> List:D) is export(:all) {
+        @adverbs
     }
 }
 
 sub EXPORT(*@args, *%_) {
-
     if @args {
         my $imports := Map.new( |(EXPORT::all::{ @args.map: '&' ~ * }:p) );
         if $imports != @args {
@@ -176,13 +187,77 @@ Text::MathematicalCase - convert to/from mathematical case
 
 =begin code :lang<raku>
 
-use Text::MathematicalCase;
+  use Text::MathematicalCase;        # just mc
+  say mc "Hello World" :serif:bold;  # 𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝
+
+  use Text::MathematicalCase :all;   # mc lc uc adverbs
+  say uc "𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝";              # 𝐇𝐄𝐋𝐋𝐎 𝐖𝐎𝐑𝐋𝐃
 
 =end code
 
 =head1 DESCRIPTION
 
-Text::MathematicalCase is ...
+Text::MathematicalCase is module that exports an C<mc> subroutine that
+implements converting to/from "mathematical case".  Just like you can
+have UPPERCASE or lowercase, you can also have 𝐦𝐚𝐭𝐡𝐞𝐦𝐚𝐭𝐢𝐜𝐚𝐥 𝐜𝐚𝐬𝐞.
+
+"Mathematical case" is basically text expressed in the alphanumeric
+symbols of the L<Mathematical Alphanumeric Symbols|https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols>
+unicode block.  In it, several styles are supported:
+
+- serif: serif, 𝐬𝐞𝐫𝐢𝐟 𝐛𝐨𝐥𝐝, 𝑠𝑒𝑟𝑖𝑓 𝑖𝑡𝑎𝑙𝑖𝑐, 𝒔𝒆𝒓𝒊𝒇 𝒃𝒐𝒍𝒅 𝒊𝒕𝒂𝒍𝒊𝒄
+- sans-serif: 𝗌𝖺𝗇𝗌-𝗌𝖾𝗋𝗂𝖿, 𝘀𝗮𝗻𝘀-𝘀𝗲𝗿𝗶𝗳 𝗯𝗼𝗹𝗱, 𝘴𝘢𝘯𝘴-𝘴𝘦𝘳𝘪𝘧 𝘪𝘵𝘢𝘭𝘪𝘤, 𝙨𝙖𝙣𝙨-𝙨𝙚𝙧𝙞𝙛 𝙗𝙤𝙡𝙙 𝙞𝙩𝙖𝙡𝙞𝙘
+- script: 𝓈𝒸𝓇𝒾𝓅𝓉, 𝓼𝓬𝓻𝓲𝓹𝓽 𝓫𝓸𝓵𝓭
+- fraktur: 𝔣𝔯𝔞𝔨𝔱𝔲𝔯, 𝖋𝖗𝖆𝖐𝖙𝖚𝖗 𝖇𝖔𝖑𝖉
+- monospace: 𝚖𝚘𝚗𝚘𝚜𝚙𝚊𝚌𝚎
+- double-struck: 𝕕𝕠𝕦𝕓𝕝𝕖-𝕤𝕥𝕣𝕦𝕔𝕜
+
+It aptionally also exports an C<lc> and/or a C<uc> subroutine (that
+perform the same function as the standard C<lc> and C<uc> subroutines,
+but are aware of mathematical case characters).  And it optionally exports
+an C<adverbs> subroutine that lists all the possible combinations of
+adverbs that can be passed on to the C<mc> subroutine.
+
+=head1 SUBROUTINES
+
+=head2 mc
+
+  say mc "Hello World" :serif:bold;  # 𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝
+
+Convert a string to mathematical case with the given adverbs.
+
+=head2 lc
+
+  use Text::MathematicalCase <lc>;
+  say lc "𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝";  # 𝐡𝐞𝐥𝐥𝐨 𝐰𝐨𝐫𝐥𝐝
+
+Convert a string to lowercase taking mathematical case into account as well.
+
+=head2 uc
+
+  use Text::MathematicalCase <uc>;
+  say uc "𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝";  # 𝐇𝐄𝐋𝐋𝐎 𝐖𝐎𝐑𝐋𝐃
+
+Convert a string to uppercase taking mathematical case into account as well.
+
+=head2 adverbs
+
+  use Text::MathematicalCase <adverbs>;
+  .say for adverbs;
+  # :double-struck
+  # :fraktur
+  # :fraktur:bold
+  # :monospace
+  # :sans-serif
+  # :sans-serif:bold
+  # :sans-serif:bold:italic
+  # :sans-serif:italic
+  # :script
+  # :script:bold
+  # :serif
+  # :serif:bold
+  # :serif:bold:italic
+  # :serif:italic
 
 =head1 AUTHOR
 

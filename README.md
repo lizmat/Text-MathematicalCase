@@ -1,24 +1,82 @@
 NAME
 ====
 
-mc - convert to/from mathematical case
+Text::MathematicalCase - convert to/from mathematical case
 
 SYNOPSIS
 ========
 
 ```raku
-use mc;
+  use Text::MathematicalCase;        # just mc
+  say mc "Hello World" :serif:bold;  # 𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝
+
+  use Text::MathematicalCase :all;   # mc lc uc adverbs
+  say uc "𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝";              # 𝐇𝐄𝐋𝐋𝐎 𝐖𝐎𝐑𝐋𝐃
 ```
 
 DESCRIPTION
 ===========
 
-mc is ...
+Text::MathematicalCase is module that exports an `mc` subroutine that implements converting to/from "mathematical case". Just like you can have UPPERCASE or lowercase, you can also have 𝐦𝐚𝐭𝐡𝐞𝐦𝐚𝐭𝐢𝐜𝐚𝐥 𝐜𝐚𝐬𝐞.
+
+"Mathematical case" is basically text expressed in the alphanumeric symbols of the [Mathematical Alphanumeric Symbols](https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols) unicode block. In it, several styles are supported:
+
+- serif: serif, 𝐬𝐞𝐫𝐢𝐟 𝐛𝐨𝐥𝐝, 𝑠𝑒𝑟𝑖𝑓 𝑖𝑡𝑎𝑙𝑖𝑐, 𝒔𝒆𝒓𝒊𝒇 𝒃𝒐𝒍𝒅 𝒊𝒕𝒂𝒍𝒊𝒄 - sans-serif: 𝗌𝖺𝗇𝗌-𝗌𝖾𝗋𝗂𝖿, 𝘀𝗮𝗻𝘀-𝘀𝗲𝗿𝗶𝗳 𝗯𝗼𝗹𝗱, 𝘴𝘢𝘯𝘴-𝘴𝘦𝘳𝘪𝘧 𝘪𝘵𝘢𝘭𝘪𝘤, 𝙨𝙖𝙣𝙨-𝙨𝙚𝙧𝙞𝙛 𝙗𝙤𝙡𝙙 𝙞𝙩𝙖𝙡𝙞𝙘 - script: 𝓈𝒸𝓇𝒾𝓅𝓉, 𝓼𝓬𝓻𝓲𝓹𝓽 𝓫𝓸𝓵𝓭 - fraktur: 𝔣𝔯𝔞𝔨𝔱𝔲𝔯, 𝖋𝖗𝖆𝖐𝖙𝖚𝖗 𝖇𝖔𝖑𝖉 - monospace: 𝚖𝚘𝚗𝚘𝚜𝚙𝚊𝚌𝚎 - double-struck: 𝕕𝕠𝕦𝕓𝕝𝕖-𝕤𝕥𝕣𝕦𝕔𝕜
+
+It aptionally also exports an `lc` and/or a `uc` subroutine (that perform the same function as the standard `lc` and `uc` subroutines, but are aware of mathematical case characters). And it optionally exports an `adverbs` subroutine that lists all the possible combinations of adverbs that can be passed on to the `mc` subroutine.
+
+SUBROUTINES
+===========
+
+mc
+--
+
+    say mc "Hello World" :serif:bold;  # 𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝
+
+Convert a string to mathematical case with the given adverbs.
+
+lc
+--
+
+    use Text::MathematicalCase <lc>;
+    say lc "𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝";  # 𝐡𝐞𝐥𝐥𝐨 𝐰𝐨𝐫𝐥𝐝
+
+Convert a string to lowercase taking mathematical case into account as well.
+
+uc
+--
+
+    use Text::MathematicalCase <uc>;
+    say uc "𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝";  # 𝐇𝐄𝐋𝐋𝐎 𝐖𝐎𝐑𝐋𝐃
+
+Convert a string to uppercase taking mathematical case into account as well.
+
+adverbs
+-------
+
+    use Text::MathematicalCase <adverbs>;
+    .say for adverbs;
+    # :double-struck
+    # :fraktur
+    # :fraktur:bold
+    # :monospace
+    # :sans-serif
+    # :sans-serif:bold
+    # :sans-serif:bold:italic
+    # :sans-serif:italic
+    # :script
+    # :script:bold
+    # :serif
+    # :serif:bold
+    # :serif:bold:italic
+    # :serif:italic
 
 AUTHOR
 ======
 
 Elizabeth Mattijsen <liz@wenzperl.nl>
+
+Source can be located at: https://github.com/lizmat/Text-MathematicalCase . Comments and Pull Requests are welcome.
 
 COPYRIGHT AND LICENSE
 =====================

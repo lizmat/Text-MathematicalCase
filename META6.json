@@ -9,14 +9,14 @@
   ],
   "description": "convert to/from mathematical case",
   "license": "Artistic-2.0",
-  "name": "mc",
+  "name": "Text::MathematicalCase",
   "perl": "6.d",
   "provides": {
-    "mc": "lib/mc.pm6"
+    "Text::MathematicalCase": "lib/Text/MathematicalCase.pm6"
   },
   "resources": [
   ],
-  "source-url": "",
+  "source-url": "ssh://github.com/lizmat/Text-MathematicalCase.git",
   "tags": [
   ],
   "test-depends": [
