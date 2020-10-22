@@ -25,6 +25,8 @@ Text::MathematicalCase is module that exports an `mc` subroutine that implements
 
 It aptionally also exports an `lc` and/or a `uc` subroutine (that perform the same function as the standard `lc` and `uc` subroutines, but are aware of mathematical case characters). And it optionally exports an `adverbs` subroutine that lists all the possible combinations of adverbs that can be passed on to the `mc` subroutine.
 
+This distribution also installs a `mc` script for easy access to the mathematical case functionality.
+
 SUBROUTINES
 ===========
 
@@ -70,6 +72,20 @@ adverbs
     # :serif:bold
     # :serif:bold:italic
     # :serif:italic
+
+SCRIPTS
+=======
+
+mc
+--
+
+    $ mc "Hello World" --double-struck
+    ℍ𝕖𝕝𝕝𝕠 𝕎𝕠𝕣𝕝𝕕
+
+    $ mc --double-struck < file-with-text
+    ℂ𝕠𝕟𝕥𝕖𝕟𝕥 𝕠𝕗 𝕗𝕚𝕝𝕖-𝕨𝕚𝕥𝕙-𝕥𝕖𝕩𝕥
+
+The `mc` script either takes a string, or reads from `STDIN` and performs the mathematical case transformation as indicated by its named arguments.
 
 AUTHOR
 ======

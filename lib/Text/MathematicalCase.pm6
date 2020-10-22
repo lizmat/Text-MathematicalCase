@@ -218,6 +218,9 @@ but are aware of mathematical case characters).  And it optionally exports
 an C<adverbs> subroutine that lists all the possible combinations of
 adverbs that can be passed on to the C<mc> subroutine.
 
+This distribution also installs a C<mc> script for easy access to the
+mathematical case functionality.
+
 =head1 SUBROUTINES
 
 =head2 mc
@@ -258,6 +261,19 @@ Convert a string to uppercase taking mathematical case into account as well.
   # :serif:bold
   # :serif:bold:italic
   # :serif:italic
+
+=head1 SCRIPTS
+
+=head2 mc
+
+  $ mc "Hello World" --double-struck
+  ℍ𝕖𝕝𝕝𝕠 𝕎𝕠𝕣𝕝𝕕
+
+  $ mc --double-struck < file-with-text
+  ℂ𝕠𝕟𝕥𝕖𝕟𝕥 𝕠𝕗 𝕗𝕚𝕝𝕖-𝕨𝕚𝕥𝕙-𝕥𝕖𝕩𝕥
+
+The C<mc> script either takes a string, or reads from C<STDIN> and performs
+the mathematical case transformation as indicated by its named arguments.
 
 =head1 AUTHOR
 
