@@ -2,6 +2,10 @@ Revision history for Text::MathematicalCase
 
 {{$NEXT}}
 
+0.0.4  2020-10-26T11:51:25+01:00
+    - Simplify lookup on codepoints (it will smartmatch the needle of better)
+    - Add See Also section for App::Unicode::Mangle reference
+
 0.0.3  2020-10-22T18:17:15+02:00
     - Make sure accented characters are also properly translated
 

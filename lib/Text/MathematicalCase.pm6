@@ -131,7 +131,7 @@ my sub trans(Str:D \string, Pair:D \mapper --> Str:D) {
 
     my uint32 @result;
     for @source -> int $needle {
-        with @haystack.first(* == $needle, :k) {
+        with @haystack.first($needle, :k) {
             @result.push(@translated[$_]);
         }
         else {
@@ -142,7 +142,7 @@ my sub trans(Str:D \string, Pair:D \mapper --> Str:D) {
     Uni.new(@result).Str;
 }
 
-module Text::MathematicalCase:ver<0.0.3>:auth<cpan:ELIZABETH> {
+module Text::MathematicalCase:ver<0.0.4>:auth<cpan:ELIZABETH> {
     my sub mc(Cool:D \string,
       :$serif, :$sans-serif, :$script, :$fraktur, :$monospace, :$double-struck,
       :$italic, :$bold
@@ -237,7 +237,7 @@ unicode block.  In it, several styles are supported:
 
 - double-struck: 𝕕𝕠𝕦𝕓𝕝𝕖-𝕤𝕥𝕣𝕦𝕔𝕜
 
-It aptionally also exports an C<lc> and/or a C<uc> subroutine (that
+It optionally also exports an C<lc> and/or a C<uc> subroutine (that
 perform the same function as the standard C<lc> and C<uc> subroutines,
 but are aware of mathematical case characters).  And it optionally exports
 an C<adverbs> subroutine that lists all the possible combinations of
@@ -299,6 +299,11 @@ Convert a string to uppercase taking mathematical case into account as well.
 
 The C<mc> script either takes a string, or reads from C<STDIN> and performs
 the mathematical case transformation as indicated by its named arguments.
+
+=head1 SEE ALSO
+
+See also the L<App::Unicode::Mangle|https://modules.raku.org/dist/App::Unicode::Mangle>
+module for a different approach to this type of functionality.
 
 =head1 AUTHOR
 

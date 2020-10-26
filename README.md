@@ -33,7 +33,7 @@ Text::MathematicalCase is module that exports an `mc` subroutine that implements
 
 - double-struck: 𝕕𝕠𝕦𝕓𝕝𝕖-𝕤𝕥𝕣𝕦𝕔𝕜
 
-It aptionally also exports an `lc` and/or a `uc` subroutine (that perform the same function as the standard `lc` and `uc` subroutines, but are aware of mathematical case characters). And it optionally exports an `adverbs` subroutine that lists all the possible combinations of adverbs that can be passed on to the `mc` subroutine.
+It optionally also exports an `lc` and/or a `uc` subroutine (that perform the same function as the standard `lc` and `uc` subroutines, but are aware of mathematical case characters). And it optionally exports an `adverbs` subroutine that lists all the possible combinations of adverbs that can be passed on to the `mc` subroutine.
 
 This distribution also installs a `mc` script for easy access to the mathematical case functionality.
 
@@ -96,6 +96,11 @@ mc
     ℂ𝕠𝕟𝕥𝕖𝕟𝕥 𝕠𝕗 𝕗𝕚𝕝𝕖-𝕨𝕚𝕥𝕙-𝕥𝕖𝕩𝕥
 
 The `mc` script either takes a string, or reads from `STDIN` and performs the mathematical case transformation as indicated by its named arguments.
+
+SEE ALSO
+========
+
+See also the [App::Unicode::Mangle](https://modules.raku.org/dist/App::Unicode::Mangle) module for a different approach to this type of functionality.
 
 AUTHOR
 ======
