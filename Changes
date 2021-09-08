@@ -2,6 +2,12 @@ Revision history for Text::MathematicalCase
 
 {{$NEXT}}
 
+0.0.5  2021-09-08T14:24:28+02:00
+    - Change file extension to .rakumod
+    - Migrate to zef ecosystem
+    - Update email address
+    - Update copyright year
+
 0.0.4  2020-10-26T11:51:25+01:00
     - Simplify lookup on codepoints (it will smartmatch the needle of better)
     - Add See Also section for App::Unicode::Mangle reference

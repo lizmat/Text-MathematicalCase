@@ -142,7 +142,7 @@ my sub trans(Str:D \string, Pair:D \mapper --> Str:D) {
     Uni.new(@result).Str;
 }
 
-module Text::MathematicalCase:ver<0.0.4>:auth<cpan:ELIZABETH> {
+module Text::MathematicalCase:ver<0.0.5>:auth<zef:lizmati> {
     my sub mc(Cool:D \string,
       :$serif, :$sans-serif, :$script, :$fraktur, :$monospace, :$double-struck,
       :$italic, :$bold
@@ -307,14 +307,14 @@ module for a different approach to this type of functionality.
 
 =head1 AUTHOR
 
-Elizabeth Mattijsen <liz@wenzperl.nl>
+Elizabeth Mattijsen <liz@raku.rocks>
 
 Source can be located at: https://github.com/lizmat/Text-MathematicalCase .
 Comments and Pull Requests are welcome.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2020 Elizabeth Mattijsen
+Copyright 2020, 2021 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
