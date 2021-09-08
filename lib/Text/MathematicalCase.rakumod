@@ -142,7 +142,7 @@ my sub trans(Str:D \string, Pair:D \mapper --> Str:D) {
     Uni.new(@result).Str;
 }
 
-module Text::MathematicalCase:ver<0.0.5>:auth<zef:lizmati> {
+module Text::MathematicalCase:ver<0.0.6>:auth<zef:lizmat> {
     my sub mc(Cool:D \string,
       :$serif, :$sans-serif, :$script, :$fraktur, :$monospace, :$double-struck,
       :$italic, :$bold
