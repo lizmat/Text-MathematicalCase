@@ -142,45 +142,43 @@ my sub trans(Str:D \string, Pair:D \mapper --> Str:D) {
     Uni.new(@result).Str;
 }
 
-module Text::MathematicalCase:ver<0.0.6>:auth<zef:lizmat> {
-    my sub mc(Cool:D \string,
-      :$serif, :$sans-serif, :$script, :$fraktur, :$monospace, :$double-struck,
-      :$italic, :$bold
-    --> Str:D) is export(:all) is hidden-from-backtrace {
+my sub mc(Cool:D \string,
+  :$serif, :$sans-serif, :$script, :$fraktur, :$monospace, :$double-struck,
+  :$italic, :$bold
+--> Str:D) is export(:all) is hidden-from-backtrace {
 
-        my str $adverbs;
-        $adverbs  = ':serif'         if $serif;
-        $adverbs ~= ':sans-serif'    if $sans-serif;
-        $adverbs ~= ':script'        if $script;
-        $adverbs ~= ':fraktur'       if $fraktur;
-        $adverbs ~= ':monospace'     if $monospace;
-        $adverbs ~= ':double-struck' if $double-struck;
+    my str $adverbs;
+    $adverbs  = ':serif'         if $serif;
+    $adverbs ~= ':sans-serif'    if $sans-serif;
+    $adverbs ~= ':script'        if $script;
+    $adverbs ~= ':fraktur'       if $fraktur;
+    $adverbs ~= ':monospace'     if $monospace;
+    $adverbs ~= ':double-struck' if $double-struck;
 
-        $adverbs ||= ':serif';  # allow for just :italic and :bold
-        $adverbs ~= ':bold'   if $bold;
-        $adverbs ~= ':italic' if $italic;
+    $adverbs ||= ':serif';  # allow for just :italic and :bold
+    $adverbs ~= ':bold'   if $bold;
+    $adverbs ~= ':italic' if $italic;
 
-        if %mapper{$adverbs} -> $mapper {
-            trans(string, $mapper)
-        }
-        else {
-            Failure.new(X::Adverb.new(
-              :what<mc>,
-              :source(try { string.VAR.name } // string.WHAT.raku),
-              :nogo($adverbs.substr(1).split(":"))
-            ))
-        }
+    if %mapper{$adverbs} -> $mapper {
+        trans(string, $mapper)
     }
+    else {
+        Failure.new(X::Adverb.new(
+          :what<mc>,
+          :source(try { string.VAR.name } // string.WHAT.raku),
+          :nogo($adverbs.substr(1).split(":"))
+        ))
+    }
+}
 
-    my sub lc(Cool:D \string --> Str:D) is export(:all) {
-        trans(string.lc, $lc-mapper)
-    }
-    my sub uc(Cool:D \string --> Str:D) is export(:all) {
-        trans(string.uc, $uc-mapper)
-    }
-    my sub adverbs(--> List:D) is export(:all) {
-        @adverbs
-    }
+my sub lc(Cool:D \string --> Str:D) is export(:all) {
+    trans(string.lc, $lc-mapper)
+}
+my sub uc(Cool:D \string --> Str:D) is export(:all) {
+    trans(string.uc, $uc-mapper)
+}
+my sub adverbs(--> List:D) is export(:all) {
+    @adverbs
 }
 
 sub EXPORT(*@args, *%_) {

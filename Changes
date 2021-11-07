@@ -2,6 +2,9 @@ Revision history for Text::MathematicalCase
 
 {{$NEXT}}
 
+0.0.7  2021-11-07T12:23:11+01:00
+    - Remove the module statement, we don't need it anymore
+
 0.0.6  2021-09-08T14:26:08+02:00
     - Argh, messed up the auth
 
