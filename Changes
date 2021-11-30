@@ -2,6 +2,9 @@ Revision history for Text::MathematicalCase
 
 {{$NEXT}}
 
+0.0.8  2021-11-30T19:33:33+01:00
+    - Simplify mc script, allow named parameters anywhere
+
 0.0.7  2021-11-07T12:23:11+01:00
     - Remove the module statement, we don't need it anymore
 

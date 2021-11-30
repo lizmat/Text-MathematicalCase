@@ -16,10 +16,10 @@
   },
   "resources": [
   ],
-  "source-url": "ssh://github.com/lizmat/Text-MathematicalCase.git",
+  "source-url": "https://github.com/lizmat/Text-MathematicalCase.git",
   "tags": [
   ],
   "test-depends": [
   ],
-  "version": "0.0.7"
+  "version": "0.0.8"
 }
