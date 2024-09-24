@@ -1,6 +1,10 @@
 Revision history for Text::MathematicalCase
 
 {{$NEXT}}
+    - Modernize pod and test file extension
+    - Add sponsor button and link
+    - Add CI badge for each OS
+    - Update copyright year
 
 0.0.8  2021-11-30T19:33:33+01:00
     - Simplify mc script, allow named parameters anywhere

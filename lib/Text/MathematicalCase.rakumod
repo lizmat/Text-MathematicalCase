@@ -205,11 +205,11 @@ Text::MathematicalCase - convert to/from mathematical case
 
 =begin code :lang<raku>
 
-  use Text::MathematicalCase;        # just mc
-  say mc "Hello World" :serif:bold;  # 𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝
+use Text::MathematicalCase;        # just mc
+say mc "Hello World" :serif:bold;  # 𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝
 
-  use Text::MathematicalCase :all;   # mc lc uc adverbs
-  say uc "𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝";              # 𝐇𝐄𝐋𝐋𝐎 𝐖𝐎𝐑𝐋𝐃
+use Text::MathematicalCase :all;   # mc lc uc adverbs
+say uc "𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝";              # 𝐇𝐄𝐋𝐋𝐎 𝐖𝐎𝐑𝐋𝐃
 
 =end code
 
@@ -223,17 +223,17 @@ have UPPERCASE or lowercase, you can also have 𝐦𝐚𝐭𝐡𝐞𝐦𝐚𝐭�
 symbols of the L<Mathematical Alphanumeric Symbols|https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols>
 unicode block.  In it, several styles are supported:
 
-- serif: serif, 𝐬𝐞𝐫𝐢𝐟 𝐛𝐨𝐥𝐝, 𝑠𝑒𝑟𝑖𝑓 𝑖𝑡𝑎𝑙𝑖𝑐, 𝒔𝒆𝒓𝒊𝒇 𝒃𝒐𝒍𝒅 𝒊𝒕𝒂𝒍𝒊𝒄
+=item serif: serif, 𝐬𝐞𝐫𝐢𝐟 𝐛𝐨𝐥𝐝, 𝑠𝑒𝑟𝑖𝑓 𝑖𝑡𝑎𝑙𝑖𝑐, 𝒔𝒆𝒓𝒊𝒇 𝒃𝒐𝒍𝒅 𝒊𝒕𝒂𝒍𝒊𝒄
 
-- sans-serif: 𝗌𝖺𝗇𝗌-𝗌𝖾𝗋𝗂𝖿, 𝘀𝗮𝗻𝘀-𝘀𝗲𝗿𝗶𝗳 𝗯𝗼𝗹𝗱, 𝘴𝘢𝘯𝘴-𝘴𝘦𝘳𝘪𝘧 𝘪𝘵𝘢𝘭𝘪𝘤, 𝙨𝙖𝙣𝙨-𝙨𝙚𝙧𝙞𝙛 𝙗𝙤𝙡𝙙 𝙞𝙩𝙖𝙡𝙞𝙘
+=item sans-serif: 𝗌𝖺𝗇𝗌-𝗌𝖾𝗋𝗂𝖿, 𝘀𝗮𝗻𝘀-𝘀𝗲𝗿𝗶𝗳 𝗯𝗼𝗹𝗱, 𝘴𝘢𝘯𝘴-𝘴𝘦𝘳𝘪𝘧 𝘪𝘵𝘢𝘭𝘪𝘤, 𝙨𝙖𝙣𝙨-𝙨𝙚𝙧𝙞𝙛 𝙗𝙤𝙡𝙙 𝙞𝙩𝙖𝙡𝙞𝙘
 
-- script: 𝓈𝒸𝓇𝒾𝓅𝓉, 𝓼𝓬𝓻𝓲𝓹𝓽 𝓫𝓸𝓵𝓭
+=item script: 𝓈𝒸𝓇𝒾𝓅𝓉, 𝓼𝓬𝓻𝓲𝓹𝓽 𝓫𝓸𝓵𝓭
 
-- fraktur: 𝔣𝔯𝔞𝔨𝔱𝔲𝔯, 𝖋𝖗𝖆𝖐𝖙𝖚𝖗 𝖇𝖔𝖑𝖉
+=item fraktur: 𝔣𝔯𝔞𝔨𝔱𝔲𝔯, 𝖋𝖗𝖆𝖐𝖙𝖚𝖗 𝖇𝖔𝖑𝖉
 
-- monospace: 𝚖𝚘𝚗𝚘𝚜𝚙𝚊𝚌𝚎
+=item monospace: 𝚖𝚘𝚗𝚘𝚜𝚙𝚊𝚌𝚎
 
-- double-struck: 𝕕𝕠𝕦𝕓𝕝𝕖-𝕤𝕥𝕣𝕦𝕔𝕜
+=item double-struck: 𝕕𝕠𝕦𝕓𝕝𝕖-𝕤𝕥𝕣𝕦𝕔𝕜
 
 It optionally also exports an C<lc> and/or a C<uc> subroutine (that
 perform the same function as the standard C<lc> and C<uc> subroutines,
@@ -248,59 +248,79 @@ mathematical case functionality.
 
 =head2 mc
 
-  say mc "Hello World" :serif:bold;  # 𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝
+=begin code :lang<raku>
+
+say mc "Hello World" :serif:bold;  # 𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝
+
+=end code
 
 Convert a string to mathematical case with the given adverbs.
 
 =head2 lc
 
-  use Text::MathematicalCase <lc>;
-  say lc "𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝";  # 𝐡𝐞𝐥𝐥𝐨 𝐰𝐨𝐫𝐥𝐝
+=begin code :lang<raku>
+
+use Text::MathematicalCase <lc>;
+say lc "𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝";  # 𝐡𝐞𝐥𝐥𝐨 𝐰𝐨𝐫𝐥𝐝
+
+=end code
 
 Convert a string to lowercase taking mathematical case into account as well.
 
 =head2 uc
 
-  use Text::MathematicalCase <uc>;
-  say uc "𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝";  # 𝐇𝐄𝐋𝐋𝐎 𝐖𝐎𝐑𝐋𝐃
+=begin code :lang<raku>
+
+use Text::MathematicalCase <uc>;
+say uc "𝐇𝐞𝐥𝐥𝐨 𝐖𝐨𝐫𝐥𝐝";  # 𝐇𝐄𝐋𝐋𝐎 𝐖𝐎𝐑𝐋𝐃
+
+=end code
 
 Convert a string to uppercase taking mathematical case into account as well.
 
 =head2 adverbs
 
-  use Text::MathematicalCase <adverbs>;
-  .say for adverbs;
-  # :double-struck
-  # :fraktur
-  # :fraktur:bold
-  # :monospace
-  # :sans-serif
-  # :sans-serif:bold
-  # :sans-serif:bold:italic
-  # :sans-serif:italic
-  # :script
-  # :script:bold
-  # :serif
-  # :serif:bold
-  # :serif:bold:italic
-  # :serif:italic
+=begin code :lang<raku>
+
+use Text::MathematicalCase <adverbs>;
+.say for adverbs;
+# :double-struck
+# :fraktur
+# :fraktur:bold
+# :monospace
+# :sans-serif
+# :sans-serif:bold
+# :sans-serif:bold:italic
+# :sans-serif:italic
+# :script
+# :script:bold
+# :serif
+# :serif:bold
+# :serif:bold:italic
+# :serif:italic
+
+=end code
 
 =head1 SCRIPTS
 
 =head2 mc
 
-  $ mc "Hello World" --double-struck
-  ℍ𝕖𝕝𝕝𝕠 𝕎𝕠𝕣𝕝𝕕
+=begin output
 
-  $ mc --double-struck < file-with-text
-  ℂ𝕠𝕟𝕥𝕖𝕟𝕥 𝕠𝕗 𝕗𝕚𝕝𝕖-𝕨𝕚𝕥𝕙-𝕥𝕖𝕩𝕥
+$ mc "Hello World" --double-struck
+ℍ𝕖𝕝𝕝𝕠 𝕎𝕠𝕣𝕝𝕕
+
+$ mc --double-struck < file-with-text
+ℂ𝕠𝕟𝕥𝕖𝕟𝕥 𝕠𝕗 𝕗𝕚𝕝𝕖-𝕨𝕚𝕥𝕙-𝕥𝕖𝕩𝕥
+
+=end output
 
 The C<mc> script either takes a string, or reads from C<STDIN> and performs
 the mathematical case transformation as indicated by its named arguments.
 
 =head1 SEE ALSO
 
-See also the L<App::Unicode::Mangle|https://modules.raku.org/dist/App::Unicode::Mangle>
+See the L<App::Unicode::Mangle|https://modules.raku.org/dist/App::Unicode::Mangle>
 module for a different approach to this type of functionality.
 
 =head1 AUTHOR
@@ -310,9 +330,13 @@ Elizabeth Mattijsen <liz@raku.rocks>
 Source can be located at: https://github.com/lizmat/Text-MathematicalCase .
 Comments and Pull Requests are welcome.
 
+If you like this module, or what I'm doing more generally, committing to a
+L<small sponsorship|https://github.com/sponsors/lizmat/>  would mean a great
+deal to me!
+
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2020, 2021 Elizabeth Mattijsen
+Copyright 2020, 2021, 2024 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

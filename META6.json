@@ -17,7 +17,7 @@
   "resources": [
   ],
   "source-url": "https://github.com/lizmat/Text-MathematicalCase.git",
-  "tags": [
+  "tags": [ "UNICODE", "STYLING"
   ],
   "test-depends": [
   ],
